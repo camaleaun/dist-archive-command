@@ -98,6 +98,13 @@ class Dist_Archive_Command {
 			}
 		}
 
+		if ( empty( $version ) && file_exists( $path . '/style.css' ) ) {
+			$contents = file_get_contents( $path . '/style.css', false, null, 0, 5000 );
+			if ( preg_match( '#[\*\s]*Version:(.+)#', $contents, $matches ) ) {
+				$version = '.' . trim( $matches[1] );
+			}
+		}
+
 		if ( empty( $version ) && file_exists( $path . '/composer.json' ) ) {
 			$composer_obj = json_decode( file_get_contents( $path . '/composer.json' ) );
 			if ( ! empty( $composer_obj->version ) ) {
@@ -137,7 +144,7 @@ class Dist_Archive_Command {
 			if ( ! empty( $excludes ) ) {
 				$excludes = ' --exclude ' . $excludes;
 			}
-			$cmd = "zip -r '{$archive_file}' {$archive_base} {$excludes}";
+			$cmd = "zip -r {$archive_file} {$archive_base} {$excludes}";
 		} elseif ( 'targz' === $assoc_args['format'] ) {
 			$excludes = array_map(
 				function( $ignored_file ) {
