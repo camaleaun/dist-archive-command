@@ -114,7 +114,7 @@ class Dist_Archive_Command {
 		}
 
 		if ( is_null( $archive_file ) ) {
-			$archive_file = dirname( $path ) . '/' . $archive_base . $version;
+			$archive_file = dirname( $path ) . '/' . strtolower( $archive_base ) . $version;
 			if ( 'zip' === $assoc_args['format'] ) {
 				$archive_file .= '.zip';
 			} elseif ( 'targz' === $assoc_args['format'] ) {
